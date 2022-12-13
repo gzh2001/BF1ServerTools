@@ -1,6 +1,5 @@
 ﻿using BF1ServerTools.Data;
 using BF1ServerTools.Helper;
-using static BF1ServerTools.API.RespJson.GetWeapons.ResultItem.WeaponsItem;
 
 namespace BF1ServerTools.Views;
 
@@ -57,16 +56,19 @@ public partial class LogView : UserControl
     /// <param name="info"></param>
     private void AddKickCDInfo(AutoKickInfo info)
     {
-        var index = Globals.KickCoolDownInfos.FindIndex(var => var.PersonaId == info.PersonaId);
-        if (index == -1)
+        if (Globals.IsEnableKickCoolDown)
         {
-            Globals.KickCoolDownInfos.Add(new()
+            var index = Globals.KickCoolDownInfos.FindIndex(var => var.PersonaId == info.PersonaId);
+            if (index == -1)
             {
-                Rank = info.Rank,
-                Name = info.Name,
-                PersonaId = info.PersonaId,
-                Date = DateTime.Now
-            });
+                Globals.KickCoolDownInfos.Add(new()
+                {
+                    Rank = info.Rank,
+                    Name = info.Name,
+                    PersonaId = info.PersonaId,
+                    Date = DateTime.Now
+                });
+            }
         }
     }
 
