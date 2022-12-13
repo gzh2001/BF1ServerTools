@@ -352,7 +352,7 @@ public partial class RuleView : UserControl
         ClearRuleLog();
 
         // 重置状态
-        Globals.SetRuleIsOK = false;
+        Globals.IsSetRuleOK = false;
         Globals.AutoKickBreakRulePlayer = false;
 
         #region 应用当前规则
@@ -397,7 +397,7 @@ public partial class RuleView : UserControl
         // 检查队伍1等级限制
         if (Globals.ServerRule_Team1.MinRank >= Globals.ServerRule_Team1.MaxRank && Globals.ServerRule_Team1.MinRank != 0 && Globals.ServerRule_Team1.MaxRank != 0)
         {
-            Globals.SetRuleIsOK = false;
+            Globals.IsSetRuleOK = false;
 
             NotifierHelper.Show(NotifierType.Warning, "队伍1 限制等级规则设置不正确");
             return;
@@ -405,7 +405,7 @@ public partial class RuleView : UserControl
         // 检查队伍2等级限制
         if (Globals.ServerRule_Team2.MinRank >= Globals.ServerRule_Team2.MaxRank && Globals.ServerRule_Team2.MinRank != 0 && Globals.ServerRule_Team2.MaxRank != 0)
         {
-            Globals.SetRuleIsOK = false;
+            Globals.IsSetRuleOK = false;
 
             NotifierHelper.Show(NotifierType.Warning, "队伍2 限制等级规则设置不正确");
             return;
@@ -442,7 +442,7 @@ public partial class RuleView : UserControl
             Globals.CustomBlacks_Name.Add(name);
         }
 
-        Globals.SetRuleIsOK = true;
+        Globals.IsSetRuleOK = true;
         #endregion
 
         AddRuleLog("【当局规则】");

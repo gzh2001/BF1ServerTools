@@ -9,6 +9,8 @@ using BF1ServerTools.Windows;
 
 using Microsoft.Web.WebView2.Core;
 using CommunityToolkit.Mvvm.Messaging;
+using System.Xml.Linq;
+using System;
 
 namespace BF1ServerTools.Views;
 
@@ -210,6 +212,14 @@ public partial class AuthView : UserControl
     private void Button_SaveConfig_Click(object sender, RoutedEventArgs e)
     {
         SaveConfig();
+
+        var index = ComboBox_ConfigNames.SelectedIndex;
+        if (index != -1)
+        {
+            ConfigNames[index] = Globals.DisplayName2;
+            ComboBox_ConfigNames.SelectedIndex = index;
+        }
+
         NotifierHelper.Show(NotifierType.Success, "保存配置文件成功");
     }
 

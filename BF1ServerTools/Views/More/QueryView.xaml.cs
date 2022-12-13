@@ -16,7 +16,7 @@ namespace BF1ServerTools.Views.More;
 public partial class QueryView : UserControl
 {
     /// <summary>
-    /// Query数据模型
+    /// 数据模型绑定
     /// </summary>
     public QueryModel QueryModel { get; set; } = new();
 
@@ -55,15 +55,21 @@ public partial class QueryView : UserControl
     [RelayCommand]
     private async void QueryPlayer()
     {
+        if (Globals.IsUseMode1)
+        {
+            NotifierHelper.Show(NotifierType.Warning, "查询功能仅模式2可用，操作取消");
+            return;
+        }
+
         if (string.IsNullOrEmpty(QueryModel.PlayerName))
         {
-            NotifierHelper.Show(NotifierType.Warning, "请输入正确的玩家ID");
+            NotifierHelper.Show(NotifierType.Warning, "请输入正确的玩家ID，操作取消");
             return;
         }
 
         if (string.IsNullOrEmpty(Globals.AccessToken))
         {
-            NotifierHelper.Show(NotifierType.Error, "玩家AccessToken为空，操作取消");
+            NotifierHelper.Show(NotifierType.Warning, "玩家AccessToken为空，操作取消");
             return;
         }
 
@@ -134,7 +140,7 @@ public partial class QueryView : UserControl
     /// <param name="personaId"></param>
     private async void GetPersonas(long personaId)
     {
-        var result = await BF1API.GetPersonasByIds(Globals.SessionId1, personaId);
+        var result = await BF1API.GetPersonasByIds(Globals.SessionId, personaId);
         if (result.IsSuccess)
         {
             JsonNode jNode = JsonNode.Parse(result.Content);
@@ -152,7 +158,7 @@ public partial class QueryView : UserControl
             }
         }
 
-        result = await BF1API.GetServersByPersonaIds(Globals.SessionId1, personaId);
+        result = await BF1API.GetServersByPersonaIds(Globals.SessionId, personaId);
         if (result.IsSuccess)
         {
             JsonNode jNode = JsonNode.Parse(result.Content);
@@ -176,7 +182,7 @@ public partial class QueryView : UserControl
     /// <param name="personaId"></param>
     private async void DetailedStats(long personaId)
     {
-        var result = await BF1API.DetailedStatsByPersonaId(Globals.SessionId1, personaId);
+        var result = await BF1API.DetailedStatsByPersonaId(Globals.SessionId, personaId);
         if (result.IsSuccess)
         {
             var detailed = JsonHelper.JsonDese<DetailedStats>(result.Content);
@@ -232,7 +238,7 @@ public partial class QueryView : UserControl
     /// <param name="personaId"></param>
     private async void GetWeapons(long personaId)
     {
-        var result = await BF1API.GetWeaponsByPersonaId(Globals.SessionId1, personaId);
+        var result = await BF1API.GetWeaponsByPersonaId(Globals.SessionId, personaId);
         if (result.IsSuccess)
         {
             var getWeapons = JsonHelper.JsonDese<GetWeapons>(result.Content);
@@ -290,7 +296,7 @@ public partial class QueryView : UserControl
     /// <param name="personaId"></param>
     private async void GetVehicles(long personaId)
     {
-        var result = await BF1API.GetVehiclesByPersonaId(Globals.SessionId1, personaId);
+        var result = await BF1API.GetVehiclesByPersonaId(Globals.SessionId, personaId);
         if (result.IsSuccess)
         {
             var getVehicles = JsonHelper.JsonDese<GetVehicles>(result.Content);

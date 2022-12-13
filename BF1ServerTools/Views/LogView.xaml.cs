@@ -1,5 +1,6 @@
 ﻿using BF1ServerTools.Data;
 using BF1ServerTools.Helper;
+using static BF1ServerTools.API.RespJson.GetWeapons.ResultItem.WeaponsItem;
 
 namespace BF1ServerTools.Views;
 
@@ -51,34 +52,58 @@ public partial class LogView : UserControl
     /////////////////////////////////////////////////////
 
     /// <summary>
+    /// 增加踢人CD信息
+    /// </summary>
+    /// <param name="info"></param>
+    private void AddKickCDInfo(AutoKickInfo info)
+    {
+        var index = Globals.KickCoolDownInfos.FindIndex(var => var.PersonaId == info.PersonaId);
+        if (index == -1)
+        {
+            Globals.KickCoolDownInfos.Add(new()
+            {
+                Rank = info.Rank,
+                Name = info.Name,
+                PersonaId = info.PersonaId,
+                Date = DateTime.Now
+            });
+        }
+    }
+
+    /// <summary>
     /// 追加手动操作日志
     /// </summary>
     /// <param name="info"></param>
     private void ScoreKickLog(AutoKickInfo info)
     {
-        this.Dispatcher.BeginInvoke(() =>
+        lock (this)
         {
-            if (TextBox_ScoreKickLog.LineCount >= 1000)
-                TextBox_ScoreKickLog.Clear();
-
-            AppendScoreKickLog($"操作时间: {DateTime.Now}");
-            AppendScoreKickLog($"等级: {info.Rank}");
-            AppendScoreKickLog($"玩家ID: {info.Name}");
-            AppendScoreKickLog($"数字ID: {info.PersonaId}");
-            AppendScoreKickLog($"踢出理由: {info.Reason}");
-            AppendScoreKickLog($"状态: {info.State}\n");
-
-            SQLiteHelper.AddLog("score_kick", new()
+            this.Dispatcher.BeginInvoke(() =>
             {
-                Rank = info.Rank,
-                Name = info.Name,
-                PersonaId = info.PersonaId,
-                Type = "手动踢人",
-                Message1 = info.Reason,
-                Message2 = info.State,
-                Message3 = ""
+                if (TextBox_ScoreKickLog.LineCount >= 1000)
+                    TextBox_ScoreKickLog.Clear();
+
+                AppendScoreKickLog($"操作时间: {DateTime.Now}");
+                AppendScoreKickLog($"等级: {info.Rank}");
+                AppendScoreKickLog($"玩家ID: {info.Name}");
+                AppendScoreKickLog($"数字ID: {info.PersonaId}");
+                AppendScoreKickLog($"踢出理由: {info.Reason}");
+                AppendScoreKickLog($"状态: {info.State}\n");
+
+                SQLiteHelper.AddLog("score_kick", new()
+                {
+                    Rank = info.Rank,
+                    Name = info.Name,
+                    PersonaId = info.PersonaId,
+                    Type = "手动踢人",
+                    Message1 = info.Reason,
+                    Message2 = info.State,
+                    Message3 = ""
+                });
             });
-        });
+
+            AddKickCDInfo(info);
+        }
     }
 
     /// <summary>
@@ -87,29 +112,34 @@ public partial class LogView : UserControl
     /// <param name="info"></param>
     private void AddKickOKLog(AutoKickInfo info)
     {
-        this.Dispatcher.BeginInvoke(() =>
+        lock (this)
         {
-            if (TextBox_KickOKLog.LineCount >= 1000)
-                TextBox_KickOKLog.Clear();
-
-            AppendKickOKLog($"操作时间: {DateTime.Now}");
-            AppendKickOKLog($"等级: {info.Rank}");
-            AppendKickOKLog($"玩家ID: {info.Name}");
-            AppendKickOKLog($"数字ID: {info.PersonaId}");
-            AppendKickOKLog($"踢出理由: {info.Reason}");
-            AppendKickOKLog($"状态: {info.State}\n");
-
-            SQLiteHelper.AddLog("kick_ok", new()
+            this.Dispatcher.BeginInvoke(() =>
             {
-                Rank = info.Rank,
-                Name = info.Name,
-                PersonaId = info.PersonaId,
-                Type = "自动踢人",
-                Message1 = info.Reason,
-                Message2 = info.State,
-                Message3 = ""
+                if (TextBox_KickOKLog.LineCount >= 1000)
+                    TextBox_KickOKLog.Clear();
+
+                AppendKickOKLog($"操作时间: {DateTime.Now}");
+                AppendKickOKLog($"等级: {info.Rank}");
+                AppendKickOKLog($"玩家ID: {info.Name}");
+                AppendKickOKLog($"数字ID: {info.PersonaId}");
+                AppendKickOKLog($"踢出理由: {info.Reason}");
+                AppendKickOKLog($"状态: {info.State}\n");
+
+                SQLiteHelper.AddLog("kick_ok", new()
+                {
+                    Rank = info.Rank,
+                    Name = info.Name,
+                    PersonaId = info.PersonaId,
+                    Type = "自动踢人",
+                    Message1 = info.Reason,
+                    Message2 = info.State,
+                    Message3 = ""
+                });
             });
-        });
+
+            AddKickCDInfo(info);
+        }
     }
 
     /// <summary>
@@ -118,29 +148,32 @@ public partial class LogView : UserControl
     /// <param name="info"></param>
     private void AddKickNOLog(AutoKickInfo info)
     {
-        this.Dispatcher.BeginInvoke(() =>
+        lock (this)
         {
-            if (TextBox_KickNOLog.LineCount >= 1000)
-                TextBox_KickNOLog.Clear();
-
-            AppendKickNOLog($"操作时间: {DateTime.Now}");
-            AppendKickNOLog($"等级: {info.Rank}");
-            AppendKickNOLog($"玩家ID: {info.Name}");
-            AppendKickNOLog($"数字ID: {info.PersonaId}");
-            AppendKickNOLog($"踢出理由: {info.Reason}");
-            AppendKickNOLog($"状态: {info.State}\n");
-
-            SQLiteHelper.AddLog("kick_no", new()
+            this.Dispatcher.BeginInvoke(() =>
             {
-                Rank = info.Rank,
-                Name = info.Name,
-                PersonaId = info.PersonaId,
-                Type = "自动踢人",
-                Message1 = info.Reason,
-                Message2 = info.State,
-                Message3 = ""
+                if (TextBox_KickNOLog.LineCount >= 1000)
+                    TextBox_KickNOLog.Clear();
+
+                AppendKickNOLog($"操作时间: {DateTime.Now}");
+                AppendKickNOLog($"等级: {info.Rank}");
+                AppendKickNOLog($"玩家ID: {info.Name}");
+                AppendKickNOLog($"数字ID: {info.PersonaId}");
+                AppendKickNOLog($"踢出理由: {info.Reason}");
+                AppendKickNOLog($"状态: {info.State}\n");
+
+                SQLiteHelper.AddLog("kick_no", new()
+                {
+                    Rank = info.Rank,
+                    Name = info.Name,
+                    PersonaId = info.PersonaId,
+                    Type = "自动踢人",
+                    Message1 = info.Reason,
+                    Message2 = info.State,
+                    Message3 = ""
+                });
             });
-        });
+        }
     }
 
     /// <summary>
@@ -149,32 +182,35 @@ public partial class LogView : UserControl
     /// <param name="info"></param>
     private void AddChangeTeamInfoLog(ChangeTeamInfo info)
     {
-        this.Dispatcher.BeginInvoke(() =>
+        lock (this)
         {
-            if (TextBox_ChangeTeamLog.LineCount >= 1000)
-                TextBox_ChangeTeamLog.Clear();
-
-            AppendChangeTeamLog($"操作时间: {DateTime.Now}");
-            AppendChangeTeamLog($"等级: {info.Rank}");
-            AppendChangeTeamLog($"玩家ID: {info.Name}");
-            AppendChangeTeamLog($"数字ID: {info.PersonaId}");
-            AppendChangeTeamLog($"当前地图: {info.GameMode} - {info.MapName}");
-            AppendChangeTeamLog($"状态: {info.State}\n");
-
-            SQLiteHelper.AddLog("change_team", new()
+            this.Dispatcher.BeginInvoke(() =>
             {
-                Rank = info.Rank,
-                Name = info.Name,
-                PersonaId = info.PersonaId,
-                Type = "更换队伍",
-                Message1 = $"{info.GameMode} - {info.MapName}",
-                Message2 = info.State,
-                Message3 = ""
-            });
-        });
+                if (TextBox_ChangeTeamLog.LineCount >= 1000)
+                    TextBox_ChangeTeamLog.Clear();
 
-        ChatView.ActionChangeTeamNotice(info);
-        RobotView.ActionSendChangeTeamLogToQQ(info);
+                AppendChangeTeamLog($"操作时间: {DateTime.Now}");
+                AppendChangeTeamLog($"等级: {info.Rank}");
+                AppendChangeTeamLog($"玩家ID: {info.Name}");
+                AppendChangeTeamLog($"数字ID: {info.PersonaId}");
+                AppendChangeTeamLog($"当前地图: {info.GameMode} - {info.MapName}");
+                AppendChangeTeamLog($"状态: {info.State}\n");
+
+                SQLiteHelper.AddLog("change_team", new()
+                {
+                    Rank = info.Rank,
+                    Name = info.Name,
+                    PersonaId = info.PersonaId,
+                    Type = "更换队伍",
+                    Message1 = $"{info.GameMode} - {info.MapName}",
+                    Message2 = info.State,
+                    Message3 = ""
+                });
+            });
+
+            ChatView.ActionChangeTeamNotice(info);
+            RobotView.ActionSendChangeTeamLogToQQ(info);
+        }
     }
 
     /////////////////////////////////////////////////////

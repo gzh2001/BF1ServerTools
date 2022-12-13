@@ -158,6 +158,11 @@ public static class Globals
     /// </summary>
     public static List<LifePlayerData> LifePlayerCacheDatas = new();
 
+    /// <summary>
+    /// 踢出玩家CD缓存
+    /// </summary>
+    public static List<KickCoolDownInfo> KickCoolDownInfos = new();
+
     ///////////////////////////////////////////////////////
 
     /// <summary>
@@ -192,7 +197,7 @@ public static class Globals
     /// <summary>
     /// 是否设置规则正确
     /// </summary>
-    public static bool SetRuleIsOK = false;
+    public static bool IsSetRuleOK = false;
 
     /// <summary>
     /// 是否自动踢出违规玩家
@@ -203,6 +208,11 @@ public static class Globals
     /// 是否自动踢出观战玩家
     /// </summary>
     public static bool IsAutoKickSpectator = false;
+
+    /// <summary>
+    /// 是否启用踢人冷却
+    /// </summary>
+    public static bool IsEnableKickCoolDown = false;
 
     ///////////////////////////////////////////////////////
 

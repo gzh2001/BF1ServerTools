@@ -7,7 +7,6 @@ using BF1ServerTools.Utils;
 using BF1ServerTools.Models;
 using BF1ServerTools.Helper;
 using BF1ServerTools.Windows;
-using NStandard;
 
 namespace BF1ServerTools.Views;
 
@@ -17,11 +16,12 @@ namespace BF1ServerTools.Views;
 public partial class DetailView : UserControl
 {
     /// <summary>
-    /// Detail的数据模型绑定
+    /// 数据模型绑定
     /// </summary>
     public DetailModel DetailModel { get; set; } = new();
 
     private List<MapInfo> ListBox_MapList = new();
+
     private List<RSPInfo> ListBox_AdminList = new();
     private List<RSPInfo> ListBox_VIPList = new();
     private List<RSPInfo> ListBox_BANList = new();
@@ -154,7 +154,7 @@ public partial class DetailView : UserControl
     /// </summary>
     private async Task<bool> GetFullServerDetails()
     {
-        if (string.IsNullOrEmpty(Globals.SessionId1))
+        if (string.IsNullOrEmpty(Globals.SessionId))
             return false;
 
         DetailModel.ServerName = "获取中...";
@@ -180,7 +180,7 @@ public partial class DetailView : UserControl
 
         /////////////////////////////////////////////////////////////////////////////////
 
-        var result = await BF1API.GetFullServerDetails(Globals.SessionId1, Globals.GameId);
+        var result = await BF1API.GetFullServerDetails(Globals.SessionId, Globals.GameId);
         if (result.IsSuccess)
         {
             var fullServerDetails = JsonHelper.JsonDese<FullServerDetails>(result.Content);
@@ -806,7 +806,7 @@ public partial class DetailView : UserControl
     /// <param name="e"></param>
     private async void Button_LeaveCurrentGame_Click(object sender, RoutedEventArgs e)
     {
-        if (string.IsNullOrEmpty(Globals.SessionId1))
+        if (string.IsNullOrEmpty(Globals.SessionId))
         {
             NotifierHelper.Show(NotifierType.Warning, "请先获取玩家SessionId");
             return;
@@ -820,7 +820,7 @@ public partial class DetailView : UserControl
 
         NotifierHelper.Show(NotifierType.Information, $"正在离开服务器 {Globals.GameId} 中...");
 
-        var result = await BF1API.LeaveGame(Globals.SessionId1, Globals.GameId);
+        var result = await BF1API.LeaveGame(Globals.SessionId, Globals.GameId);
         if (result.IsSuccess)
             NotifierHelper.Show(NotifierType.Success, $"[{result.ExecTime:0.00} 秒]  离开服务器 {Globals.GameId} 成功");
         else

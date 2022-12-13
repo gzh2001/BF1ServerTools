@@ -110,7 +110,7 @@
         <!--  ***************************  -->
         <DockPanel Grid.Column="1">
             <StackPanel DockPanel.Dock="Top">
-                <ui:UiLabelIcon Content="自动踢人" />
+                <ui:UiLabelIcon Content="设置" />
                 <Button
                     x:Name="Button_CheckAutoKickEnv"
                     Click="Button_CheckAutoKickEnv_Click"
@@ -119,6 +119,10 @@
                     x:Name="CheckBox_IsAutoKickSpectator"
                     Click="CheckBox_IsAutoKickSpectator_Click"
                     Content="限制非管理员观战玩家" />
+                <CheckBox
+                    x:Name="CheckBox_IsEnableKickCoolDown"
+                    Click="CheckBox_IsEnableKickCoolDown_Click"
+                    Content="启用踢出玩家CD限制（30分钟）" />
 
                 <ui:UiLabelIcon Content="自动踢人" />
                 <ToggleButton

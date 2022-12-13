@@ -120,17 +120,24 @@ public partial class MonitView : UserControl
                 if (!Globals.LifePlayerCacheDatas[i].IsWeaponOK || !Globals.LifePlayerCacheDatas[i].IsVehicleOK)
                 {
                     Globals.LifePlayerCacheDatas.RemoveAt(i);
-                    continue;
                 }
-
-                if (MiscUtil.DiffMinutes(Globals.LifePlayerCacheDatas[i].Date, DateTime.Now) > CacheTime)
+                else if (MiscUtil.DiffMinutes(Globals.LifePlayerCacheDatas[i].Date, DateTime.Now) > CacheTime)
                 {
                     Globals.LifePlayerCacheDatas.RemoveAt(i);
                 }
             }
 
-            // SessionId1为空时跳过
-            if (string.IsNullOrEmpty(Globals.SessionId1))
+            // 移除踢人缓存CD超时玩家
+            for (int i = Globals.KickCoolDownInfos.Count - 1; i >= 0; i--)
+            {
+                if (MiscUtil.DiffMinutes(Globals.KickCoolDownInfos[i].Date, DateTime.Now) > CacheTime)
+                {
+                    Globals.KickCoolDownInfos.RemoveAt(i);
+                }
+            }
+
+            // SessionId为空时跳过
+            if (string.IsNullOrEmpty(Globals.SessionId))
                 continue;
 
             // GameId为空时跳过
@@ -145,7 +152,7 @@ public partial class MonitView : UserControl
                 if (index == -1)
                 {
                     // 缓存玩家生涯KD、KPM
-                    var result = await BF1API.DetailedStatsByPersonaId(Globals.SessionId1, item.PersonaId);
+                    var result = await BF1API.DetailedStatsByPersonaId(Globals.SessionId, item.PersonaId);
                     if (result.IsSuccess)
                     {
                         var detailedStats = JsonHelper.JsonDese<DetailedStats>(result.Content);
@@ -172,7 +179,7 @@ public partial class MonitView : UserControl
                         var lifeIndex = Globals.LifePlayerCacheDatas.FindIndex(var => var.PersonaId == item.PersonaId);
 
                         // 缓存玩家生涯武器数据
-                        result = await BF1API.GetWeaponsByPersonaId(Globals.SessionId1, item.PersonaId);
+                        result = await BF1API.GetWeaponsByPersonaId(Globals.SessionId, item.PersonaId);
                         if (result.IsSuccess)
                         {
                             var getWeapons = JsonHelper.JsonDese<GetWeapons>(result.Content);
@@ -206,7 +213,7 @@ public partial class MonitView : UserControl
                         }
 
                         // 缓存玩家生涯载具数据
-                        result = await BF1API.GetVehiclesByPersonaId(Globals.SessionId1, item.PersonaId);
+                        result = await BF1API.GetVehiclesByPersonaId(Globals.SessionId, item.PersonaId);
                         if (result.IsSuccess)
                         {
                             var getVehicles = JsonHelper.JsonDese<GetVehicles>(result.Content);
@@ -292,6 +299,15 @@ public partial class MonitView : UserControl
 
                 item.Admin = PlayerUtil.IsAdminVIP(item.PersonaId, Globals.ServerAdmins_PID);
                 item.White = PlayerUtil.IsWhite(item.Name, Globals.CustomWhites_Name);
+
+                // 踢人CD
+                for (int i = 0; i < Globals.KickCoolDownInfos.Count; i++)
+                {
+                    if (item.PersonaId == Globals.KickCoolDownInfos[i].PersonaId)
+                    {
+                        AddBreakRulePlayerInfo(item, BreakType.CD, "Server Kick CD 30 Minute");
+                    }
+                }
 
                 // 黑名单
                 for (int i = 0; i < Globals.CustomBlacks_Name.Count; i++)
@@ -1032,7 +1048,7 @@ public partial class MonitView : UserControl
         AddRuleLog("【检查环境】");
 
         AddRuleLog("👉 正在检查 玩家是否应用当前规则...");
-        if (!Globals.SetRuleIsOK)
+        if (!Globals.IsSetRuleOK)
         {
             AddRuleLog("❌ 玩家没有应用当前规则");
             NotifierHelper.Show(NotifierType.Warning, "环境检查未通过，操作取消");
@@ -1170,6 +1186,16 @@ public partial class MonitView : UserControl
     private void CheckBox_IsAutoKickSpectator_Click(object sender, RoutedEventArgs e)
     {
         Globals.IsAutoKickSpectator = CheckBox_IsAutoKickSpectator.IsChecked == true;
+    }
+
+    /// <summary>
+    /// 启用踢出玩家CD限制
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void CheckBox_IsEnableKickCoolDown_Click(object sender, RoutedEventArgs e)
+    {
+        Globals.IsEnableKickCoolDown = CheckBox_IsEnableKickCoolDown.IsChecked == true;
     }
 
     /// <summary>

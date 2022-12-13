@@ -44,7 +44,7 @@ public partial class ServerView : UserControl
             return;
         }
 
-        if (!string.IsNullOrEmpty(Globals.SessionId1))
+        if (!string.IsNullOrEmpty(Globals.SessionId))
         {
             ListBox_ServersItems.Clear();
             ServerModel.IsLoading = true;
@@ -52,7 +52,7 @@ public partial class ServerView : UserControl
 
             NotifierHelper.Show(NotifierType.Information, $"正在查询服务器 {ServerModel.ServerName} 数据中...");
 
-            var result = await BF1API.SearchServers(Globals.SessionId1, ServerModel.ServerName);
+            var result = await BF1API.SearchServers(Globals.SessionId, ServerModel.ServerName);
             if (result.IsSuccess)
             {
                 var searchServers = JsonHelper.JsonDese<SearchServers>(result.Content);
