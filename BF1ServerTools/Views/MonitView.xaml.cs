@@ -136,119 +136,115 @@ public partial class MonitView : UserControl
                 }
             }
 
-            // SessionId为空时跳过
-            if (string.IsNullOrEmpty(Globals.SessionId))
-                continue;
-
-            // GameId为空时跳过
-            if (Globals.GameId == 0)
-                continue;
-
-            // 遍历玩家列表
-            foreach (var item in Player.GetPlayerCache())
+            // SessionId不为空 且 GameId不为0
+            if (!string.IsNullOrEmpty(Globals.SessionId) && Globals.GameId != 0)
             {
-                // 先判断这个玩家是否在玩家生涯缓存数据中
-                var index = Globals.LifePlayerCacheDatas.FindIndex(var => var.PersonaId == item.PersonaId);
-                if (index == -1)
+                // 遍历玩家列表
+                foreach (var item in Player.GetPlayerCache())
                 {
-                    // 缓存玩家生涯KD、KPM
-                    var result = await BF1API.DetailedStatsByPersonaId(Globals.SessionId, item.PersonaId);
-                    if (result.IsSuccess)
+                    // 先判断这个玩家是否在玩家生涯缓存数据中
+                    var index = Globals.LifePlayerCacheDatas.FindIndex(var => var.PersonaId == item.PersonaId);
+                    if (index == -1)
                     {
-                        var detailedStats = JsonHelper.JsonDese<DetailedStats>(result.Content);
-
-                        int kills = detailedStats.result.basicStats.kills;
-                        int deaths = detailedStats.result.basicStats.deaths;
-                        float kd = PlayerUtil.GetPlayerKD(kills, deaths);
-                        float kpm = detailedStats.result.basicStats.kpm;
-                        int time = PlayerUtil.GetPlayHours(detailedStats.result.basicStats.timePlayed);
-
-                        Globals.LifePlayerCacheDatas.Add(new()
-                        {
-                            Date = DateTime.Now,
-                            Name = item.Name,
-                            PersonaId = item.PersonaId,
-                            KD = kd,
-                            KPM = kpm,
-                            Time = time,
-                            WeaponInfos = new(),
-                            VehicleInfos = new()
-                        });
-
-                        // 拿到当前生涯索引
-                        var lifeIndex = Globals.LifePlayerCacheDatas.FindIndex(var => var.PersonaId == item.PersonaId);
-
-                        // 缓存玩家生涯武器数据
-                        result = await BF1API.GetWeaponsByPersonaId(Globals.SessionId, item.PersonaId);
+                        // 缓存玩家生涯KD、KPM
+                        var result = await BF1API.DetailedStatsByPersonaId(Globals.SessionId, item.PersonaId);
                         if (result.IsSuccess)
                         {
-                            var getWeapons = JsonHelper.JsonDese<GetWeapons>(result.Content);
-                            Globals.LifePlayerCacheDatas[lifeIndex].IsWeaponOK = true;
-                            if (getWeapons.result.Count != 0)
-                            {
-                                foreach (var res in getWeapons.result)
-                                {
-                                    foreach (var wea in res.weapons)
-                                    {
-                                        var star = (int)wea.stats.values.kills / 100;
-                                        if (star == 0)
-                                            continue;
+                            var detailedStats = JsonHelper.JsonDese<DetailedStats>(result.Content);
 
-                                        Globals.LifePlayerCacheDatas[lifeIndex].WeaponInfos.Add(new()
+                            int kills = detailedStats.result.basicStats.kills;
+                            int deaths = detailedStats.result.basicStats.deaths;
+                            float kd = PlayerUtil.GetPlayerKD(kills, deaths);
+                            float kpm = detailedStats.result.basicStats.kpm;
+                            int time = PlayerUtil.GetPlayHours(detailedStats.result.basicStats.timePlayed);
+
+                            Globals.LifePlayerCacheDatas.Add(new()
+                            {
+                                Date = DateTime.Now,
+                                Name = item.Name,
+                                PersonaId = item.PersonaId,
+                                KD = kd,
+                                KPM = kpm,
+                                Time = time,
+                                WeaponInfos = new(),
+                                VehicleInfos = new()
+                            });
+
+                            // 拿到当前生涯索引
+                            var lifeIndex = Globals.LifePlayerCacheDatas.FindIndex(var => var.PersonaId == item.PersonaId);
+
+                            // 缓存玩家生涯武器数据
+                            result = await BF1API.GetWeaponsByPersonaId(Globals.SessionId, item.PersonaId);
+                            if (result.IsSuccess)
+                            {
+                                var getWeapons = JsonHelper.JsonDese<GetWeapons>(result.Content);
+                                Globals.LifePlayerCacheDatas[lifeIndex].IsWeaponOK = true;
+                                if (getWeapons.result.Count != 0)
+                                {
+                                    foreach (var res in getWeapons.result)
+                                    {
+                                        foreach (var wea in res.weapons)
                                         {
-                                            Name = ChsUtil.ToSimplified(wea.name),
-                                            Kill = (int)wea.stats.values.kills,
-                                            Star = star
-                                        });
+                                            var star = (int)wea.stats.values.kills / 100;
+                                            if (star == 0)
+                                                continue;
+
+                                            Globals.LifePlayerCacheDatas[lifeIndex].WeaponInfos.Add(new()
+                                            {
+                                                Name = ChsUtil.ToSimplified(wea.name),
+                                                Kill = (int)wea.stats.values.kills,
+                                                Star = star
+                                            });
+                                        }
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            // 获取失败则移除队列
-                            Globals.LifePlayerCacheDatas[lifeIndex].IsWeaponOK = false;
-                            Globals.LifePlayerCacheDatas.RemoveAt(lifeIndex);
-                            continue;
-                        }
-
-                        // 缓存玩家生涯载具数据
-                        result = await BF1API.GetVehiclesByPersonaId(Globals.SessionId, item.PersonaId);
-                        if (result.IsSuccess)
-                        {
-                            var getVehicles = JsonHelper.JsonDese<GetVehicles>(result.Content);
-                            Globals.LifePlayerCacheDatas[lifeIndex].IsVehicleOK = true;
-                            if (getVehicles.result.Count != 0)
+                            else
                             {
-                                foreach (var res in getVehicles.result)
-                                {
-                                    foreach (var veh in res.vehicles)
-                                    {
-                                        var star = (int)veh.stats.values.kills / 100;
-                                        if (star == 0)
-                                            continue;
+                                // 获取失败则移除队列
+                                Globals.LifePlayerCacheDatas[lifeIndex].IsWeaponOK = false;
+                                Globals.LifePlayerCacheDatas.RemoveAt(lifeIndex);
+                                continue;
+                            }
 
-                                        Globals.LifePlayerCacheDatas[lifeIndex].VehicleInfos.Add(new()
+                            // 缓存玩家生涯载具数据
+                            result = await BF1API.GetVehiclesByPersonaId(Globals.SessionId, item.PersonaId);
+                            if (result.IsSuccess)
+                            {
+                                var getVehicles = JsonHelper.JsonDese<GetVehicles>(result.Content);
+                                Globals.LifePlayerCacheDatas[lifeIndex].IsVehicleOK = true;
+                                if (getVehicles.result.Count != 0)
+                                {
+                                    foreach (var res in getVehicles.result)
+                                    {
+                                        foreach (var veh in res.vehicles)
                                         {
-                                            Name = ChsUtil.ToSimplified(veh.name),
-                                            Kill = (int)veh.stats.values.kills,
-                                            Star = star
-                                        });
+                                            var star = (int)veh.stats.values.kills / 100;
+                                            if (star == 0)
+                                                continue;
+
+                                            Globals.LifePlayerCacheDatas[lifeIndex].VehicleInfos.Add(new()
+                                            {
+                                                Name = ChsUtil.ToSimplified(veh.name),
+                                                Kill = (int)veh.stats.values.kills,
+                                                Star = star
+                                            });
+                                        }
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            // 获取失败则移除队列
-                            Globals.LifePlayerCacheDatas[lifeIndex].IsVehicleOK = false;
-                            Globals.LifePlayerCacheDatas.RemoveAt(lifeIndex);
-                            continue;
-                        }
+                            else
+                            {
+                                // 获取失败则移除队列
+                                Globals.LifePlayerCacheDatas[lifeIndex].IsVehicleOK = false;
+                                Globals.LifePlayerCacheDatas.RemoveAt(lifeIndex);
+                                continue;
+                            }
 
-                        // 按击杀数降序排序
-                        Globals.LifePlayerCacheDatas[lifeIndex].WeaponInfos.Sort((a, b) => b.Kill.CompareTo(a.Kill));
-                        Globals.LifePlayerCacheDatas[lifeIndex].VehicleInfos.Sort((a, b) => b.Kill.CompareTo(a.Kill));
+                            // 按击杀数降序排序
+                            Globals.LifePlayerCacheDatas[lifeIndex].WeaponInfos.Sort((a, b) => b.Kill.CompareTo(a.Kill));
+                            Globals.LifePlayerCacheDatas[lifeIndex].VehicleInfos.Sort((a, b) => b.Kill.CompareTo(a.Kill));
+                        }
                     }
                 }
             }
