@@ -606,7 +606,7 @@ public partial class RuleView : UserControl
                 Title = "批量导入白名单列表",
                 RestoreDirectory = true,
                 Multiselect = false,
-                Filter = "Txt文件|*.txt"
+                Filter = "文本文档|*.txt"
             };
 
             if (fileDialog.ShowDialog() == true)
@@ -646,7 +646,7 @@ public partial class RuleView : UserControl
             {
                 Title = "批量导出白名单列表",
                 RestoreDirectory = true,
-                Filter = "Txt文件|*.txt"
+                Filter = "文本文档|*.txt"
             };
 
             if (fileDialog.ShowDialog() == true)
@@ -710,7 +710,7 @@ public partial class RuleView : UserControl
                 Title = "批量导入黑名单列表",
                 RestoreDirectory = true,
                 Multiselect = false,
-                Filter = "Txt文件|*.txt"
+                Filter = "文本文档|*.txt"
             };
 
             if (fileDialog.ShowDialog() == true)
@@ -750,7 +750,7 @@ public partial class RuleView : UserControl
             {
                 Title = "批量导出黑名单列表",
                 RestoreDirectory = true,
-                Filter = "Txt文件|*.txt"
+                Filter = "文本文档|*.txt"
             };
 
             if (fileDialog.ShowDialog() == true)

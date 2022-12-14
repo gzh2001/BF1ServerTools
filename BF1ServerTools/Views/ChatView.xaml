@@ -225,34 +225,42 @@
             </TextBlock>
         </StackPanel>
         <!--  ******************************  -->
-        <StackPanel Grid.Column="2">
-            <ui:UiLabelIcon Content="游戏播报" />
-            <GroupBox
-                Margin="5"
-                Header="换边通知"
-                Style="{StaticResource GroupBoxStyle_Normal}">
-                <StackPanel>
-                    <DockPanel>
-                        <TextBlock Margin="5" Text="换边通知最低等级" />
-                        <TextBlock
+        <DockPanel Grid.Column="2">
+            <StackPanel DockPanel.Dock="Top">
+                <ui:UiLabelIcon Content="游戏播报" />
+                <GroupBox
+                    Margin="5"
+                    Header="换边通知"
+                    Style="{StaticResource GroupBoxStyle_Normal}">
+                    <StackPanel>
+                        <DockPanel>
+                            <TextBlock Margin="5" Text="换边通知最低等级" />
+                            <TextBlock
+                                Margin="5"
+                                HorizontalAlignment="Right"
+                                Text="{Binding ElementName=Slider_ChangeTeamMinRank, Path=Value, StringFormat={}{0}}" />
+                        </DockPanel>
+                        <Slider
+                            x:Name="Slider_ChangeTeamMinRank"
+                            Maximum="150"
+                            Minimum="1" />
+                        <ToggleButton
+                            x:Name="ToggleButton_ActiveChangeTeamNotice"
                             Margin="5"
-                            HorizontalAlignment="Right"
-                            Text="{Binding ElementName=Slider_ChangeTeamMinRank, Path=Value, StringFormat={}{0}}" />
-                    </DockPanel>
-                    <Slider
-                        x:Name="Slider_ChangeTeamMinRank"
-                        Maximum="150"
-                        Minimum="1" />
-                    <ToggleButton
-                        x:Name="ToggleButton_ActiveChangeTeamNotice"
-                        Margin="5"
-                        Click="ToggleButton_ActiveChangeTeamNotice_Click"
-                        Content="激活换边通知"
-                        FontSize="14"
-                        FontWeight="Bold" />
-                </StackPanel>
-            </GroupBox>
-        </StackPanel>
+                            Click="ToggleButton_ActiveChangeTeamNotice_Click"
+                            Content="激活换边通知"
+                            FontSize="14"
+                            FontWeight="Bold" />
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+            <ui:UiLabelIcon Content="局内聊天" DockPanel.Dock="Top" />
+            <TextBox
+                x:Name="TextBox_GameChats"
+                Margin="5"
+                DockPanel.Dock="Bottom"
+                Style="{StaticResource TextBoxStyle_Logger}" />
+        </DockPanel>
     </Grid>
 
 </UserControl>

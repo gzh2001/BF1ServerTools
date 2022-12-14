@@ -29,11 +29,25 @@ public partial class CustomKickWindow
     {
         this.Hide();
 
-        var reason = TextBox_CustomReason.Text.Trim();
-        if (string.IsNullOrEmpty(reason))
-            reason = "NULL";
-        else
-            reason = ChsUtil.ToTraditional(reason);
+        string reason = "NULL";
+        if (RadioButton_Reson0.IsChecked == true)
+        {
+            reason = TextBox_CustomReason.Text.Trim();
+            if (!string.IsNullOrEmpty(reason))
+                reason = ChsUtil.ToTraditional(reason);
+        }
+        else if (RadioButton_Reson1.IsChecked == true)
+        {
+            reason = "FairFight: Banned Code #RSuhf1";
+        }
+        else if (RadioButton_Reson2.IsChecked == true)
+        {
+            reason = "未知错误。错误代码：1";
+        }
+        else if (RadioButton_Reson3.IsChecked == true)
+        {
+            reason = "ADMINPRIORITY";
+        }
 
         NotifierHelper.Show(NotifierType.Information, $"正在踢出玩家 {PlayerName} 中...");
 

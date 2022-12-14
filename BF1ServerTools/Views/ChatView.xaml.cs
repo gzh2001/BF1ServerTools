@@ -128,6 +128,12 @@ public partial class ChatView : UserControl
         };
         TimerNoAFK.Elapsed += TimerNoAFK_Elapsed;
 
+        new Thread(GetLastChatInfoThread)
+        {
+            Name = "GetLastChatInfoThread",
+            IsBackground = true
+        }.Start();
+
         //////////////////////////////////////////////
 
         ActionChangeTeamNotice = ChangeTeamNotice;
@@ -458,6 +464,55 @@ public partial class ChatView : UserControl
         {
             ChatInputWindow?.Close();
             ChatInputWindow = null;
+        }
+    }
+
+    /// <summary>
+    /// 获取战地1最后聊天信息线程
+    /// </summary>
+    private void GetLastChatInfoThread()
+    {
+        bool flag = false;
+        long old_pSender = 0, old_pContent = 0;
+
+        while (MainWindow.IsAppRunning)
+        {
+            if (Globals.GameId == 0)
+            {
+                if (flag)
+                {
+                    flag = false;
+
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        TextBox_GameChats.Clear();
+                    });
+                }
+            }
+            else
+            {
+                flag = true;
+
+                var sender = Chat.GetLastChatSender(out long pSender);
+                var content = Chat.GetLastChatContent(out long pContent);
+
+                if (pSender != 0 && pContent != 0)
+                {
+                    if (pSender != old_pSender && pContent != old_pContent)
+                    {
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            TextBox_GameChats.AppendText($"{sender} {content}\n");
+                        });
+                        RobotView.ActionSendGameChatsMsgToQQ(sender, content);
+
+                        old_pSender = pSender;
+                        old_pContent = pContent;
+                    }
+                }
+            }
+
+            Thread.Sleep(200);
         }
     }
 }

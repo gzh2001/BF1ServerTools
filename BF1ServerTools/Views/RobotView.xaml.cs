@@ -32,7 +32,7 @@ public partial class RobotView : UserControl
     /// <summary>
     /// Robot配置文件路径
     /// </summary>
-    private string F_Robot_Path = FileUtil.D_Config_Path + @"\RobotConfig.json";
+    private readonly string F_Robot_Path = FileUtil.D_Config_Path + @"\RobotConfig.json";
 
     ////////////////////////////////////////////////////////
 
@@ -49,6 +49,10 @@ public partial class RobotView : UserControl
     /// 换边通知转发到QQ群委托
     /// </summary>
     public static Action<ChangeTeamInfo> ActionSendChangeTeamLogToQQ;
+    /// <summary>
+    /// 局内聊天转发到QQ群委托
+    /// </summary>
+    public static Action<string, string> ActionSendGameChatsMsgToQQ;
 
     public RobotView()
     {
@@ -88,12 +92,7 @@ public partial class RobotView : UserControl
         //////////////////////////////////////////////////////////////////
 
         ActionSendChangeTeamLogToQQ = SendChangeTeamLogToQQ;
-
-        new Thread(GetLastChatInfoThread)
-        {
-            Name = "GetLastChatInfoThread",
-            IsBackground = true
-        }.Start();
+        ActionSendGameChatsMsgToQQ = SendGameChatsMsgToQQ;
     }
 
     /// <summary>
@@ -140,49 +139,14 @@ public partial class RobotView : UserControl
     }
 
     /// <summary>
-    /// 获取战地1最后聊天信息线程
-    /// </summary>
-    private void GetLastChatInfoThread()
-    {
-        long old_pSender = 0, old_pContent = 0;
-
-        while (MainWindow.IsAppRunning)
-        {
-            if (RobotConfig.IsSendGameChatToQQ &&
-                RobotConfig.QQGroupID != 0 &&
-                QQGroupList.Contains(RobotConfig.QQGroupID))
-            {
-                var sender = Chat.GetLastChatSender(out long pSender);
-                var content = Chat.GetLastChatContent(out long pContent);
-
-                sender = sender.Replace(":", "");
-
-                if (pSender != 0 && pContent != 0)
-                {
-                    if (pSender != old_pSender && pContent != old_pContent)
-                    {
-                        var localData = Player.GetLocalPlayer();
-
-                        if (!string.IsNullOrEmpty(sender) && sender != localData.FullName)
-                            _ = QQAPI.SendGroupMsg(RobotConfig.QQGroupID, $"收到游戏内聊天\n{sender} 说: {content}");
-
-                        old_pSender = pSender;
-                        old_pContent = pContent;
-                    }
-                }
-            }
-
-            Thread.Sleep(200);
-        }
-    }
-
-    /// <summary>
     /// 启动QQ机器人服务
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
     private void Button_RunGoCqHttpServer_Click(object sender, RoutedEventArgs e)
     {
+        SaveConfig();
+
         if (ProcessUtil.IsAppRun("go-cqhttp"))
         {
             AppendLogger("请不要重复打开，go-cqhttp 程序已经在运行了");
@@ -206,6 +170,8 @@ public partial class RobotView : UserControl
     /// <param name="e"></param>
     private void Button_RunWebsocketServer_Click(object sender, RoutedEventArgs e)
     {
+        SaveConfig();
+
         if (!ProcessUtil.IsAppRun("go-cqhttp"))
         {
             AppendLogger("请先启动 go-cqhttp 程序");
@@ -380,6 +346,29 @@ public partial class RobotView : UserControl
         sb.Append($"状态: {info.State}");
 
         _ = QQAPI.SendGroupMsg(RobotConfig.QQGroupID, sb.ToString());
+    }
+
+    /// <summary>
+    /// 发送局内聊天到QQ群
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="content"></param>
+    private void SendGameChatsMsgToQQ(string sender, string content)
+    {
+        if (!RobotConfig.IsSendGameChatToQQ)
+            return;
+
+        if (RobotConfig.QQGroupID == 0)
+            return;
+
+        if (!QQGroupList.Contains(RobotConfig.QQGroupID))
+            return;
+
+        sender = sender.Replace(":", "");
+        var localData = Player.GetLocalPlayer();
+
+        if (!string.IsNullOrEmpty(sender) && sender != localData.FullName)
+            _ = QQAPI.SendGroupMsg(RobotConfig.QQGroupID, $"收到游戏内聊天\n{sender} 说: {content}");
     }
 
     /// <summary>
