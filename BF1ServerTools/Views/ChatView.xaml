@@ -131,9 +131,6 @@
                 说明：直接输入简体中文即可，程序会自动转换成繁体中文发送
             </TextBlock>
             <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
-                说明：由于战地1游戏字库为精简版繁体中文，部分繁体中文无法显示是正常现象
-            </TextBlock>
-            <TextBlock Style="{StaticResource TextBlockStyle_Hint}">
                 说明：最大支持256个字符（大概85个汉字），汉字一个占3字符，英文字母数字符合占1个字符，建议一次不要超过90个字符（大概30个汉字）
             </TextBlock>
             <TextBlock Style="{StaticResource TextBlockStyle_Hint}">

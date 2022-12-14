@@ -190,9 +190,12 @@ public static class PlayerUtil
     {
         lock (Obj)
         {
-            var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
-            if (index != -1)
-                return Globals.LifePlayerCacheDatas[index].KD;
+            if (Globals.LifePlayerCacheDatas != null)
+            {
+                var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
+                if (index != -1)
+                    return Globals.LifePlayerCacheDatas[index].KD;
+            }
 
             return 0;
         }
@@ -207,9 +210,12 @@ public static class PlayerUtil
     {
         lock (Obj)
         {
-            var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
-            if (index != -1)
-                return Globals.LifePlayerCacheDatas[index].KPM;
+            if (Globals.LifePlayerCacheDatas != null)
+            {
+                var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
+                if (index != -1)
+                    return Globals.LifePlayerCacheDatas[index].KPM;
+            }
 
             return 0;
         }
@@ -224,9 +230,12 @@ public static class PlayerUtil
     {
         lock (Obj)
         {
-            var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
-            if (index != -1)
-                return Globals.LifePlayerCacheDatas[index].Time;
+            if (Globals.LifePlayerCacheDatas != null)
+            {
+                var index = Globals.LifePlayerCacheDatas.FindIndex(item => item.PersonaId == personaId);
+                if (index != -1)
+                    return Globals.LifePlayerCacheDatas[index].Time;
+            }
 
             return 0;
         }

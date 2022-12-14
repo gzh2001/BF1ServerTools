@@ -23,7 +23,7 @@ public partial class ChatView : UserControl
     private ChatConfig ChatConfig { get; set; } = new();
 
     /// <summary>
-    /// Chat数据模型，绑定UI
+    /// 数据模型绑定
     /// </summary>
     public ChatModel ChatModel { get; set; } = new();
 
@@ -68,7 +68,7 @@ public partial class ChatView : UserControl
     /// <summary>
     /// 配置文件路径
     /// </summary>
-    private string F_Chat_Path = FileUtil.D_Config_Path + @"\ChatConfig.json";
+    private readonly string F_Chat_Path = FileUtil.D_Config_Path + @"\ChatConfig.json";
 
     /// <summary>
     /// 独立聊天窗口

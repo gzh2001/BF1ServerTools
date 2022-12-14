@@ -29,7 +29,7 @@ public partial class CustomKickWindow
     {
         this.Hide();
 
-        string reason = "NULL";
+        string reason = string.Empty;
         if (RadioButton_Reson0.IsChecked == true)
         {
             reason = TextBox_CustomReason.Text.Trim();
@@ -42,9 +42,21 @@ public partial class CustomKickWindow
         }
         else if (RadioButton_Reson2.IsChecked == true)
         {
-            reason = "未知错误。错误代码：1";
+            reason = "您已被 FairFight 踢出。";
         }
         else if (RadioButton_Reson3.IsChecked == true)
+        {
+            reason = "未知錯誤。錯誤代碼：1";
+        }
+        else if (RadioButton_Reson4.IsChecked == true)
+        {
+            reason = "您與遊戲連線已中斷。";
+        }
+        else if (RadioButton_Reson5.IsChecked == true)
+        {
+            reason = "該遊戲已不存在。";
+        }
+        else if (RadioButton_Reson6.IsChecked == true)
         {
             reason = "ADMINPRIORITY";
         }
