@@ -291,9 +291,9 @@ public static class WeaponData
         new WeaponName(){ Kind="火炮装甲车3", English="U_GBR_PierceArrow_Package_Mortar", Chinese="迫击炮装甲车", ShortName="ATruck Mortar", ImageName="GBRPierceArrowAALorry-6e6d8d9f.png" },
 
         new WeaponName(){ Kind="坦克", English="ID_P_VNAME_STCHAMOND", Chinese="攻击坦克 圣沙蒙", ShortName="STCHAMOND", ImageName="FRAStChamond-3123e0cd.png" },
-        new WeaponName(){ Kind="攻击坦克", English="U_FRA_StChamond_Package_Assault", Chinese="战地攻击坦克", ShortName="STCHAMOND ZD", ImageName="FRAStChamond-3123e0cd.png" },
-        new WeaponName(){ Kind="攻击坦克", English="U_FRA_StChamond_Package_Gas", Chinese="毒气攻击坦克", ShortName="STCHAMOND DQ", ImageName="FRAStChamond-3123e0cd.png" },
-        new WeaponName(){ Kind="攻击坦克", English="U_FRA_StChamond_Package_Standoff", Chinese="对峙攻击坦克", ShortName="STCHAMOND DZ", ImageName="FRAStChamond-3123e0cd.png" },
+        new WeaponName(){ Kind="攻击坦克1", English="U_FRA_StChamond_Package_Assault", Chinese="战地攻击坦克", ShortName="STCHAMOND ZD", ImageName="FRAStChamond-3123e0cd.png" },
+        new WeaponName(){ Kind="攻击坦克2", English="U_FRA_StChamond_Package_Gas", Chinese="毒气攻击坦克", ShortName="STCHAMOND DQ", ImageName="FRAStChamond-3123e0cd.png" },
+        new WeaponName(){ Kind="攻击坦克3", English="U_FRA_StChamond_Package_Standoff", Chinese="对峙攻击坦克", ShortName="STCHAMOND DZ", ImageName="FRAStChamond-3123e0cd.png" },
 
         new WeaponName(){ Kind="坦克", English="ID_P_VNAME_ASSAULTTRUCK", Chinese="突袭装甲车 朴帝洛夫·加福德", ShortName="ASSAULTTRUCK", ImageName="PutilovGarford-20a4fd91.png" },
         new WeaponName(){ Kind="突袭装甲车1", English="U_RU_PutilovGarford_Package_AssaultGun", Chinese="突袭装甲车", ShortName="ATTruck TX", ImageName="PutilovGarford-20a4fd91.png" },
@@ -342,15 +342,14 @@ public static class WeaponData
 
         ////////////////
 
-        new WeaponName(){ Kind="船", English="ID_P_VNAME_HMS_LANCE", Chinese="船 L 级驱逐舰", ShortName="HMS LANCE", ImageName="HMSLancerDestroyer-65317e44.png" },
+        new WeaponName(){ Kind="驱逐舰", English="ID_P_VNAME_HMS_LANCE", Chinese="驱逐舰 L 级驱逐舰", ShortName="HMS LANCE", ImageName="HMSLancerDestroyer-65317e44.png" },
 
-        new WeaponName(){ Kind="驱逐舰", English="U_HMS_Lance_Package_Destroyer", Chinese="鱼雷艇驱逐舰", ShortName="HMS LANCE YL", ImageName="HMSLancerDestroyer-65317e44.png" },
-        new WeaponName(){ Kind="驱逐舰", English="U_HMS_Lance_Package_Minelayer", Chinese="水雷布设艇", ShortName="HMS LANCE SL", ImageName="HMSLancerDestroyer-65317e44.png" },
+        new WeaponName(){ Kind="驱逐舰1", English="U_HMS_Lance_Package_Destroyer", Chinese="鱼雷艇驱逐舰", ShortName="HMS LANCE YL", ImageName="HMSLancerDestroyer-65317e44.png" },
+        new WeaponName(){ Kind="驱逐舰2", English="U_HMS_Lance_Package_Minelayer", Chinese="水雷布设艇", ShortName="HMS LANCE SL", ImageName="HMSLancerDestroyer-65317e44.png" },
 
         ////////////////
         
         new WeaponName(){ Kind="骑兵", English="ID_P_VNAME_HORSE", Chinese="骑兵 战马", ShortName="HORSE", ImageName="Horse-c07830d0.png" },
-        new WeaponName(){ Kind="战马", English="U_Horse_Package_Cavalry", Chinese="战马", ShortName="Cavalry", ImageName="Horse-c07830d0.png" },
 
         ////////////////
         
