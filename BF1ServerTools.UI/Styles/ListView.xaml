@@ -137,7 +137,7 @@
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                 <StackPanel Margin="5">
                     <TextBlock Text="兵种：" />
-                    <TextBlock Text="{Binding Kit2}" />
+                    <TextBlock Text="{Binding Kit3}" />
                 </StackPanel>
                 <StackPanel Margin="5">
                     <TextBlock Text="战队：" />
@@ -163,7 +163,7 @@
                     Height="25"
                     Margin="5"
                     DockPanel.Dock="Left"
-                    Source="{Binding Kit, Converter={StaticResource StringToImageSourceConverter}}"
+                    Source="{Binding Kit2, Converter={StaticResource StringToImageSourceConverter}}"
                     Style="{DynamicResource ImageStyle_HighQuality}" />
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                     <StackPanel Margin="5">

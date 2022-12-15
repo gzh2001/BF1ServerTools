@@ -133,6 +133,12 @@ public partial class PlayerDataModel : ObservableObject, IComparable<PlayerDataM
     private string kit2;
 
     /// <summary>
+    /// 兵种3
+    /// </summary>
+    [ObservableProperty]
+    private string kit3;
+
+    /// <summary>
     /// 武器槽0
     /// </summary>
     [ObservableProperty]
@@ -210,8 +216,8 @@ public partial class PlayerDataModel : ObservableObject, IComparable<PlayerDataM
                 return other.lifeKpm.CompareTo(this.lifeKpm);
             case OrderBy.LTime:
                 return other.lifeTime.CompareTo(this.lifeTime);
-            case OrderBy.Kit2:
-                return other.kit2.CompareTo(this.kit2);
+            case OrderBy.Kit3:
+                return other.kit3.CompareTo(this.kit3);
             case OrderBy.Weapon:
                 return other.weaponS0.CompareTo(this.weaponS0);
             default:

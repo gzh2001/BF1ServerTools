@@ -85,7 +85,7 @@ public partial class ServerView : UserControl
                             MapNamePretty = ChsUtil.ToSimplified(item.mapNamePretty),
                             MapMode = item.mapName,
                             MapModePretty = ChsUtil.ToSimplified(item.mapModePretty),
-                            MapImageUrl = ClientHelper.GetTempImagePath(item.mapImageUrl, "maps"),
+                            MapImageUrl = ClientHelper.GetTempImagePath(item.mapImageUrl, "map"),
                             PasswordProtected = item.passwordProtected,
                             PingSiteAlias = item.pingSiteAlias,
                             IsFavorite = item.isFavorite,

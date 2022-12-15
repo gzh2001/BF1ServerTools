@@ -87,6 +87,10 @@ public static class Player
             var _clan = Memory.ReadString(_baseAddress + 0x2151, 64);
             var _name = Memory.ReadString(_baseAddress + 0x40, 64);
 
+            var offset = Memory.Read<long>(_baseAddress + 0x11A8);
+            offset = Memory.Read<long>(offset + 0x28);
+            var _kit = Memory.ReadString(offset, 64);
+
             var _pClientVehicleEntity = Memory.Read<long>(_baseAddress + 0x1D38);
             if (Memory.IsValid(_pClientVehicleEntity))
             {
@@ -95,10 +99,38 @@ public static class Player
 
                 for (int j = 1; j < 8; j++)
                     _weaponSlot[j] = "";
+
+                var tempVehicleCustomizationAsset = Memory.Read<long>(_pVehicleEntityData + 0x120);
+                var tempVehicleName = Memory.ReadString(Memory.Read<long>(tempVehicleCustomizationAsset + 0x10), 128);
+                if (tempVehicleName.Contains("Unlocks"))
+                {
+                    tempVehicleName = tempVehicleName.Split("Unlocks")[0];
+
+                    for (int j = 0; j < 100; j++)
+                    {
+                        var tempMultiUnlockAsset = Memory.Read<long>(_baseAddress + j * 0x8 + 0x13A8);
+                        if (!Memory.IsValid(tempMultiUnlockAsset))
+                            continue;
+
+                        var vtable = Memory.Read<long>(tempMultiUnlockAsset);
+                        if (vtable == 0x142B8CFA8)
+                        {
+                            var tempVehicleFullName = Memory.ReadString(Memory.Read<long>(tempMultiUnlockAsset + 0x10), 128);
+                            if (tempVehicleFullName.Contains(tempVehicleName))
+                            {
+                                _weaponSlot[1] = Memory.ReadString(Memory.Read<long>(tempMultiUnlockAsset + 0x20), 64);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
             else
             {
                 var _pClientSoldierEntity = Memory.Read<long>(_baseAddress + 0x1D48);
+                if (!Memory.IsValid(_pClientSoldierEntity))
+                    _kit = "";
+
                 var _pClientSoldierWeaponComponent = Memory.Read<long>(_pClientSoldierEntity + 0x698);
                 var _m_handler = Memory.Read<long>(_pClientSoldierWeaponComponent + 0x8A8);
 
@@ -125,6 +157,7 @@ public static class Player
                     Name = _name,
                     PersonaId = _personaId,
                     SquadId = _squadId,
+                    Kit = _kit,
 
                     Rank = 0,
                     Kill = 0,

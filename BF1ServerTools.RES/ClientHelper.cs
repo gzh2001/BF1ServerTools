@@ -92,10 +92,7 @@ public static class ClientHelper
         else
             return string.Empty;
 
-        if (originWeaponName.StartsWith("ID_P_"))
-            return VehiclesImg.Vehicles2Dict.ContainsKey(imageName) ? VehiclesImg.Vehicles2Dict[imageName] : string.Empty;
-        else
-            return WeaponsImg.Weapons2Dict.ContainsKey(imageName) ? WeaponsImg.Weapons2Dict[imageName] : string.Empty;
+        return WeaponImg.Weapon2Dict.ContainsKey(imageName) ? WeaponImg.Weapon2Dict[imageName] : string.Empty;
     }
 
     /// <summary>
@@ -109,20 +106,16 @@ public static class ClientHelper
         var extension = Path.GetFileName(url);
         switch (type)
         {
-            case "maps":
-                return MapsImg.MapsDict.ContainsKey(extension) ? MapsImg.MapsDict[extension] : string.Empty;
-            case "weapons":
-                return WeaponsImg.WeaponsDict.ContainsKey(extension) ? WeaponsImg.WeaponsDict[extension] : string.Empty;
-            case "weapons2":
-                return WeaponsImg.Weapons2Dict.ContainsKey(extension) ? WeaponsImg.Weapons2Dict[extension] : string.Empty;
-            case "vehicles":
-                return VehiclesImg.VehiclesDict.ContainsKey(extension) ? VehiclesImg.VehiclesDict[extension] : string.Empty;
-            case "vehicles2":
-                return VehiclesImg.Vehicles2Dict.ContainsKey(extension) ? VehiclesImg.Vehicles2Dict[extension] : string.Empty;
-            case "classes":
-                return ClassesImg.ClassesDict.ContainsKey(extension) ? ClassesImg.ClassesDict[extension] : string.Empty;
-            case "classes2":
-                return ClassesImg.Classes2Dict.ContainsKey(extension) ? ClassesImg.Classes2Dict[extension] : string.Empty;
+            case "map":
+                return MapImg.MapDict.ContainsKey(extension) ? MapImg.MapDict[extension] : string.Empty;
+            case "weapon":
+                return WeaponImg.WeaponDict.ContainsKey(extension) ? WeaponImg.WeaponDict[extension] : string.Empty;
+            case "weapon2":
+                return WeaponImg.Weapon2Dict.ContainsKey(extension) ? WeaponImg.Weapon2Dict[extension] : string.Empty;
+            case "kit":
+                return KitImg.KitDict.ContainsKey(extension) ? KitImg.KitDict[extension] : string.Empty;
+            case "kit2":
+                return KitImg.Kit2Dict.ContainsKey(extension) ? KitImg.Kit2Dict[extension] : string.Empty;
             default:
                 return string.Empty;
         }
@@ -135,11 +128,9 @@ public static class ClientHelper
     /// <returns></returns>
     public static string GetWeaponShortTxt(string weaponName)
     {
-        int index = WeaponData.AllWeaponInfo.FindIndex(var => var.English.Equals(weaponName));
+        var index = WeaponData.AllWeaponInfo.FindIndex(var => var.English.Equals(weaponName));
         if (index != -1)
-        {
             return WeaponData.AllWeaponInfo[index].ShortName;
-        }
 
         return weaponName;
     }
@@ -275,6 +266,106 @@ public static class ClientHelper
                 return "坦克";
             default:
                 return className;
+        }
+    }
+
+    /// <summary>
+    /// 获取玩家当前兵种图片
+    /// </summary>
+    /// <param name="kit"></param>
+    /// <returns></returns>
+    public static string GetPlayerKitImage(string kit)
+    {
+        switch (kit)
+        {
+            // 坦克
+            case "ID_M_TANKER":
+                return "\\BF1ServerTools.RES;component\\Assets\\Images\\Kits2\\KitIconTankerLarge.png";
+            // 飞机
+            case "ID_M_PILOT":
+                return "\\BF1ServerTools.RES;component\\Assets\\Images\\Kits2\\KitIconPilotLarge.png";
+            // 骑兵
+            case "ID_M_CAVALRY":
+                return "\\BF1ServerTools.RES;component\\Assets\\Images\\Kits2\\KitIconRiderLarge.png";
+            // 哨兵
+            case "ID_M_SENTRY":
+                return "\\BF1ServerTools.RES;component\\Assets\\Images\\Kits2\\KitIconSentryLarge.png";
+            // 喷火兵
+            case "ID_M_FLAMETHROWER":
+                return "\\BF1ServerTools.RES;component\\Assets\\Images\\Kits2\\KitIconFlamethrowerLarge.png";
+            // 入侵者
+            case "ID_M_INFILTRATOR":
+                return "\\BF1ServerTools.RES;component\\Assets\\Images\\Kits2\\KitIconInfiltratorLarge.png";
+            // 战壕奇兵
+            case "ID_M_TRENCHRAIDER":
+                return "\\BF1ServerTools.RES;component\\Assets\\Images\\Kits2\\KitIconTrenchRaiderLarge.png";
+            // 坦克猎手
+            case "ID_M_ANTITANK":
+                return "\\BF1ServerTools.RES;component\\Assets\\Images\\Kits2\\KitIconAntiTankLarge.png";
+            // 突击兵
+            case "ID_M_ASSAULT":
+                return "\\BF1ServerTools.RES;component\\Assets\\Images\\Kits2\\KitIconAssaultLarge.png";
+            // 医疗兵
+            case "ID_M_MEDIC":
+                return "\\BF1ServerTools.RES;component\\Assets\\Images\\Kits2\\KitIconMedicLarge.png";
+            // 支援兵
+            case "ID_M_SUPPORT":
+                return "\\BF1ServerTools.RES;component\\Assets\\Images\\Kits2\\KitIconSupportLarge.png";
+            // 侦察兵
+            case "ID_M_SCOUT":
+                return "\\BF1ServerTools.RES;component\\Assets\\Images\\Kits2\\KitIconScoutLarge.png";
+            default:
+                return string.Empty;
+        }
+    }
+
+    /// <summary>
+    /// 获取玩家当前兵种名称
+    /// </summary>
+    /// <param name="kit"></param>
+    /// <returns></returns>
+    public static string GetPlayerKitName(string kit)
+    {
+        switch (kit)
+        {
+            // 坦克
+            case "ID_M_TANKER":
+                return "12 坦克";
+            // 飞机
+            case "ID_M_PILOT":
+                return "11 飞机";
+            // 骑兵
+            case "ID_M_CAVALRY":
+                return "10 骑兵";
+            // 哨兵
+            case "ID_M_SENTRY":
+                return "09 哨兵";
+            // 喷火兵
+            case "ID_M_FLAMETHROWER":
+                return "08 喷火兵";
+            // 入侵者
+            case "ID_M_INFILTRATOR":
+                return "07 入侵者";
+            // 战壕奇兵
+            case "ID_M_TRENCHRAIDER":
+                return "06 战壕奇兵";
+            // 坦克猎手
+            case "ID_M_ANTITANK":
+                return "05 坦克猎手";
+            // 突击兵
+            case "ID_M_ASSAULT":
+                return "04 突击兵";
+            // 医疗兵
+            case "ID_M_MEDIC":
+                return "03 医疗兵";
+            // 支援兵
+            case "ID_M_SUPPORT":
+                return "02 支援兵";
+            // 侦察兵
+            case "ID_M_SCOUT":
+                return "01 侦察兵";
+            default:
+                return string.Empty;
         }
     }
 

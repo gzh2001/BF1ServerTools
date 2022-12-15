@@ -30,6 +30,7 @@ public class PlayerData
 
     public string Kit { get; set; }
     public string Kit2 { get; set; }
+    public string Kit3 { get; set; }
 
     public string WeaponS0 { get; set; }
     public string WeaponS1 { get; set; }

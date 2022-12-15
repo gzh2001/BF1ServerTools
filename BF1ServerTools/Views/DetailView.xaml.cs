@@ -243,7 +243,7 @@ public partial class DetailView : UserControl
             {
                 ListBox_MapList.Add(new MapInfo()
                 {
-                    MapImage = ClientHelper.GetTempImagePath(item.mapImage, "maps"),
+                    MapImage = ClientHelper.GetTempImagePath(item.mapImage, "map"),
                     MapName = ChsUtil.ToSimplified(item.mapPrettyName),
                     MapMode = ChsUtil.ToSimplified(item.modePrettyName)
                 });

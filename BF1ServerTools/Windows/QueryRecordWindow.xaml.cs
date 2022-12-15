@@ -185,7 +185,7 @@ public partial class QueryRecordWindow
                     weapons.Add(new()
                     {
                         name = ChsUtil.ToSimplified(wea.name),
-                        imageUrl = ClientHelper.GetTempImagePath(wea.imageUrl, "weapons2"),
+                        imageUrl = ClientHelper.GetTempImagePath(wea.imageUrl, "weapon2"),
                         star = PlayerUtil.GetKillStar((int)wea.stats.values.kills),
                         kills = (int)wea.stats.values.kills,
                         killsPerMinute = PlayerUtil.GetPlayerKPM(wea.stats.values.kills, wea.stats.values.seconds),
@@ -243,7 +243,7 @@ public partial class QueryRecordWindow
                     vehicles.Add(new()
                     {
                         name = ChsUtil.ToSimplified(veh.name),
-                        imageUrl = ClientHelper.GetTempImagePath(veh.imageUrl, "vehicles2"),
+                        imageUrl = ClientHelper.GetTempImagePath(veh.imageUrl, "weapon2"),
                         star = PlayerUtil.GetKillStar((int)veh.stats.values.kills),
                         kills = (int)veh.stats.values.kills,
                         killsPerMinute = PlayerUtil.GetPlayerKPM(veh.stats.values.kills, veh.stats.values.seconds),

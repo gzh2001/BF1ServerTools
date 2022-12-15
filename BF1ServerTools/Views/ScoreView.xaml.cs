@@ -237,8 +237,8 @@ public partial class ScoreView : UserControl
                 item.Vip = PlayerUtil.IsAdminVIP(item.PersonaId, Globals.ServerVIPs_PID);
                 item.White = PlayerUtil.IsWhite(item.Name, Globals.CustomWhites_Name);
 
-                item.Kit = ClientHelper.GetPlayerKitImage(item.WeaponS0, item.WeaponS2, item.WeaponS5);
-                item.Kit2 = ClientHelper.GetPlayerKitName(item.WeaponS0, item.WeaponS2, item.WeaponS5);
+                item.Kit2 = ClientHelper.GetPlayerKitImage(item.Kit);
+                item.Kit3 = ClientHelper.GetPlayerKitName(item.Kit);
 
                 switch (item.TeamId)
                 {
@@ -404,6 +404,7 @@ public partial class ScoreView : UserControl
                     ListView_PlayerList_Team1[i].Score = PlayerList_Team1[index].Score;
                     ListView_PlayerList_Team1[i].Kit = PlayerList_Team1[index].Kit;
                     ListView_PlayerList_Team1[i].Kit2 = PlayerList_Team1[index].Kit2;
+                    ListView_PlayerList_Team1[i].Kit3 = PlayerList_Team1[index].Kit3;
                     ListView_PlayerList_Team1[i].WeaponS0 = PlayerList_Team1[index].WeaponS0;
                     ListView_PlayerList_Team1[i].WeaponS1 = PlayerList_Team1[index].WeaponS1;
                     ListView_PlayerList_Team1[i].WeaponS2 = PlayerList_Team1[index].WeaponS2;
@@ -446,6 +447,7 @@ public partial class ScoreView : UserControl
                         Score = PlayerList_Team1[i].Score,
                         Kit = PlayerList_Team1[i].Kit,
                         Kit2 = PlayerList_Team1[i].Kit2,
+                        Kit3 = PlayerList_Team1[i].Kit3,
                         WeaponS0 = PlayerList_Team1[i].WeaponS0,
                         WeaponS1 = PlayerList_Team1[i].WeaponS1,
                         WeaponS2 = PlayerList_Team1[i].WeaponS2,
@@ -501,6 +503,7 @@ public partial class ScoreView : UserControl
                     ListView_PlayerList_Team2[i].Score = PlayerList_Team2[index].Score;
                     ListView_PlayerList_Team2[i].Kit = PlayerList_Team2[index].Kit;
                     ListView_PlayerList_Team2[i].Kit2 = PlayerList_Team2[index].Kit2;
+                    ListView_PlayerList_Team2[i].Kit3 = PlayerList_Team2[index].Kit3;
                     ListView_PlayerList_Team2[i].WeaponS0 = PlayerList_Team2[index].WeaponS0;
                     ListView_PlayerList_Team2[i].WeaponS1 = PlayerList_Team2[index].WeaponS1;
                     ListView_PlayerList_Team2[i].WeaponS2 = PlayerList_Team2[index].WeaponS2;
@@ -543,6 +546,7 @@ public partial class ScoreView : UserControl
                         Score = PlayerList_Team2[i].Score,
                         Kit = PlayerList_Team2[i].Kit,
                         Kit2 = PlayerList_Team2[i].Kit2,
+                        Kit3 = PlayerList_Team2[i].Kit3,
                         WeaponS0 = PlayerList_Team2[i].WeaponS0,
                         WeaponS1 = PlayerList_Team2[i].WeaponS1,
                         WeaponS2 = PlayerList_Team2[i].WeaponS2,
@@ -852,7 +856,7 @@ public partial class ScoreView : UserControl
             builder.Append($"生涯KD：{item.LifeKd}，");
             builder.Append($"生涯KPM：{item.LifeKpm}，");
             builder.Append($"生涯时长：{item.LifeTime}，");
-            builder.Append($"兵种：{item.Kit2}，");
+            builder.Append($"兵种：{item.Kit3}，");
             builder.Append($"主武器：{item.WeaponS0}，");
             builder.Append($"配枪：{item.WeaponS1}，");
             builder.Append($"配备一：{item.WeaponS2}，");
@@ -995,7 +999,7 @@ public partial class ScoreView : UserControl
             builder.Append($"生涯KD：{item.LifeKd}，");
             builder.Append($"生涯KPM：{item.LifeKpm}，");
             builder.Append($"生涯时长：{item.LifeTime}，");
-            builder.Append($"兵种：{item.Kit2}，");
+            builder.Append($"兵种：{item.Kit3}，");
             builder.Append($"主武器：{item.WeaponS0}，");
             builder.Append($"配枪：{item.WeaponS1}，");
             builder.Append($"配备一：{item.WeaponS2}，");
