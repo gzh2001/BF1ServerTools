@@ -297,7 +297,7 @@ public static class WeaponData
 
         new WeaponName(){ Kind="坦克", English="ID_P_VNAME_ASSAULTTRUCK", Chinese="突袭装甲车 朴帝洛夫·加福德", ShortName="ASSAULTTRUCK", ImageName="PutilovGarford-20a4fd91.png" },
         new WeaponName(){ Kind="突袭装甲车1", English="U_RU_PutilovGarford_Package_AssaultGun", Chinese="突袭装甲车", ShortName="ATTruck TX", ImageName="PutilovGarford-20a4fd91.png" },
-        new WeaponName(){ Kind="突袭装甲车2", English="U_RU_PutilovGarford_Package_AntiVehicle", Chinese="反装甲装甲车", ShortName="ATTruck AT", ImageName="PutilovGarford-20a4fd91.png" },
+        new WeaponName(){ Kind="突袭装甲车2", English="U_RU_PutilovGarford_Package_AntiVehicle", Chinese="反坦克装甲车", ShortName="ATTruck AT", ImageName="PutilovGarford-20a4fd91.png" },
         new WeaponName(){ Kind="突袭装甲车3", English="U_RU_PutilovGarford_Package_Recon", Chinese="侦察装甲车", ShortName="ATTruck ZC", ImageName="PutilovGarford-20a4fd91.png" },
 
         ////////////////
