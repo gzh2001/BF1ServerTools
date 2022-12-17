@@ -51,7 +51,7 @@ public partial class MonitView : UserControl
     /// <summary>
     /// 踢人成功延迟时间，单位秒
     /// </summary>
-    private const int KickDelay = 45;
+    private const int KickDelay = 10;
 
     /// <summary>
     /// 生涯数据缓存时间，单位分钟
