@@ -470,7 +470,7 @@ public partial class MonitView : UserControl
             if (serverRule.LifeMaxKPM != 0 &&
                 Globals.LifePlayerCacheDatas[lifeIndex].KPM > serverRule.LifeMaxKPM)
             {
-                AddBreakRulePlayerInfo(playerData, BreakType.LifeKPM, $"Life KPM Limit {serverRule.LifeMaxKD:0.00}");
+                AddBreakRulePlayerInfo(playerData, BreakType.LifeKPM, $"Life KPM Limit {serverRule.LifeMaxKPM:0.00}");
             }
 
             var tempData = new List<string>
