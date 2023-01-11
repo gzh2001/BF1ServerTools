@@ -214,6 +214,11 @@ public static class Globals
     /// </summary>
     public static bool IsEnableKickCoolDown = false;
 
+    /// <summary>
+    /// 是否启用踢出非白名单玩家
+    /// </summary>
+    public static bool IsEnableKickNoWhites = false;
+
     ///////////////////////////////////////////////////////
 
     public static bool WhiteLifeKD = true;

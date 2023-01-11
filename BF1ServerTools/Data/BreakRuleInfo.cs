@@ -49,6 +49,7 @@ public enum BreakType
     Spectator,
     Black,
     CD,
+    NoWhite,
 
     LifeKD,
     LifeKPM,

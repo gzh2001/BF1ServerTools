@@ -63,6 +63,11 @@ public partial class MonitView : UserControl
     /// </summary>
     private string F_LifeCache_Path = FileUtil.D_Data_Path + @"\LifeCache.json";
 
+    /// <summary>
+    /// 自定义踢出非白名单玩家理由
+    /// </summary>
+    public string KickNoWhitesReason { get; set; } = "请加QQ群";
+
     ///////////////////////////////////////////////////////
 
     public MonitView()
@@ -312,6 +317,12 @@ public partial class MonitView : UserControl
                     {
                         AddBreakRulePlayerInfo(item, BreakType.Black, "Server Black List");
                     }
+                }
+
+                // 踢出非白名单玩家
+                if (Globals.IsEnableKickNoWhites)
+                {
+                    AddBreakRulePlayerInfo(item, BreakType.NoWhite, $"{KickNoWhitesReason}");
                 }
 
                 switch (item.TeamId)
@@ -1192,6 +1203,16 @@ public partial class MonitView : UserControl
     private void CheckBox_IsEnableKickCoolDown_Click(object sender, RoutedEventArgs e)
     {
         Globals.IsEnableKickCoolDown = CheckBox_IsEnableKickCoolDown.IsChecked == true;
+    }
+
+    /// <summary>
+    /// 启用踢出非白名单玩家
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void CheckBox_IsEnableKickNoWhites_Click(object sender, RoutedEventArgs e)
+    {
+        Globals.IsEnableKickNoWhites = CheckBox_IsEnableKickNoWhites.IsChecked == true;
     }
 
     /// <summary>
