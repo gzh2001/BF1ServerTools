@@ -99,10 +99,10 @@ public static class Player
             {
                 var _pVehicleHealthComponent = Memory.Read<long>(_pClientVehicleEntity + 0x1D0);
                 if (!Memory.IsValid(_pVehicleHealthComponent))
-                    continue;
+                    goto NOWEAPON;
                 var _health = Memory.Read<float>(_pVehicleHealthComponent + 0x40);
                 if (_health <= 0)
-                    continue;
+                    goto NOWEAPON;
 
                 var _pVehicleEntityData = Memory.Read<long>(_pClientVehicleEntity + 0x30);
                 _weaponSlot[0] = Memory.ReadString(Memory.Read<long>(_pVehicleEntityData + 0x2F8), 64);
@@ -133,10 +133,10 @@ public static class Player
 
                 var _pSoldierHealthComponent = Memory.Read<long>(_pClientSoldierEntity + 0x1D0);
                 if (!Memory.IsValid(_pSoldierHealthComponent))
-                    continue;
+                    goto NOWEAPON;
                 var _health = Memory.Read<float>(_pSoldierHealthComponent + 0x40);
                 if (_health <= 0)
-                    continue;
+                    goto NOWEAPON;
 
                 var _pClientSoldierWeaponComponent = Memory.Read<long>(_pClientSoldierEntity + 0x698);
                 var _m_handler = Memory.Read<long>(_pClientSoldierWeaponComponent + 0x8A8);
@@ -152,6 +152,7 @@ public static class Player
                 }
             }
 
+        NOWEAPON:
             var index = _playerList.FindIndex(val => val.PersonaId == _personaId);
             if (index == -1)
             {
