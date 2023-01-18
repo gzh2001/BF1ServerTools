@@ -91,14 +91,21 @@ public static class Player
             offset = Memory.Read<long>(offset + 0x28);
             var _kit = Memory.ReadString(offset, 64);
 
+            for (int j = 0; j < 8; j++)
+                _weaponSlot[j] = string.Empty;
+
             var _pClientVehicleEntity = Memory.Read<long>(_baseAddress + 0x1D38);
             if (Memory.IsValid(_pClientVehicleEntity))
             {
+                var _pVehicleHealthComponent = Memory.Read<long>(_pClientVehicleEntity + 0x1D0);
+                if (!Memory.IsValid(_pVehicleHealthComponent))
+                    continue;
+                var _health = Memory.Read<float>(_pVehicleHealthComponent + 0x40);
+                if (_health <= 0)
+                    continue;
+
                 var _pVehicleEntityData = Memory.Read<long>(_pClientVehicleEntity + 0x30);
                 _weaponSlot[0] = Memory.ReadString(Memory.Read<long>(_pVehicleEntityData + 0x2F8), 64);
-
-                for (int j = 1; j < 8; j++)
-                    _weaponSlot[j] = "";
 
                 for (int j = 0; j < 100; j++)
                 {
@@ -123,6 +130,13 @@ public static class Player
                 var _pClientSoldierEntity = Memory.Read<long>(_baseAddress + 0x1D48);
                 if (!Memory.IsValid(_pClientSoldierEntity))
                     _kit = "";
+
+                var _pSoldierHealthComponent = Memory.Read<long>(_pClientSoldierEntity + 0x1D0);
+                if (!Memory.IsValid(_pSoldierHealthComponent))
+                    continue;
+                var _health = Memory.Read<float>(_pSoldierHealthComponent + 0x40);
+                if (_health <= 0)
+                    continue;
 
                 var _pClientSoldierWeaponComponent = Memory.Read<long>(_pClientSoldierEntity + 0x698);
                 var _m_handler = Memory.Read<long>(_pClientSoldierWeaponComponent + 0x8A8);
