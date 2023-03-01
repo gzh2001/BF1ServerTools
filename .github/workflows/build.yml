@@ -30,7 +30,7 @@ jobs:
         run: |
           Start-BitsTransfer -Source https://github.com/Mikubill/transfer/releases/download/v0.4.17/transfer_0.4.17_windows_amd64.zip -Destination D:\a\BF1ServerTools
           Expand-Archive -Path D:\a\BF1ServerTools\transfer_0.4.17_windows_amd64.zip -DestinationPath D:\a\BF1ServerTools
-          ./transfer.exe wet -s --no-progress D:\a\BF1ServerTools\output\BF1ServerTools.zip
+          D:\a\BF1ServerTools\transfer.exe wet -s --no-progress D:\a\BF1ServerTools\output\BF1ServerTools.zip
 
       # 上传GitHub Action Artifact
       - name: Upload bin directory
