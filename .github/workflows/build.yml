@@ -33,5 +33,5 @@ jobs:
       - name: Upload bin directory
         uses: actions/upload-artifact@main
         with:
-          name: BF1ServerTools.zip
-          path: D:\a\BF1ServerTools\output
+          name: BF1ServerTools
+          path: D:\a\BF1ServerTools\output\BF1ServerTools
