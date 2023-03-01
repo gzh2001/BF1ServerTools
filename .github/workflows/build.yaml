@@ -1,0 +1,19 @@
+﻿name: "build"
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          vs-version: '[17.4,17.5)'
+
+      - name: Build app for release
+        run: msbuild BF1ServerTools.sln
