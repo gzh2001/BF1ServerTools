@@ -25,16 +25,17 @@ jobs:
       # 开始编译
       - name: Compile
         id: Compile
-        run: msbuild -restore -p:Configuration=Release -p:OutputPath=.\output\BF1ServerTools BF1ServerTools.sln
+        run: msbuild -restore -p:Configuration=Release -p:OutputPath=..\output\BF1ServerTools BF1ServerTools.sln
 
       # 压缩编译输出
       - name: Compress output
         id: Compress
         if: steps.Compile.outcome == 'success'
-        run: Compress-Archive -Path .\output\BF1ServerTools -DestinationPath .\output\BF1ServerTools.zip
+        run: |
+          Compress-Archive -Path .\output\BF1ServerTools -DestinationPath .\output\BF1ServerTools.zip
 
       # 上传wetransfer
-      - name: Upload firmware to WeTransfer
+      - name: Upload to WeTransfer
         id: wetransfer
         if: steps.Compress.outcome == 'success' && env.wetransfer == 'true' && !cancelled()
         run: |
@@ -43,7 +44,7 @@ jobs:
           .\transfer.exe wet -s --no-progress .\output\BF1ServerTools.zip
 
       # 上传GitHub Action Artifact
-      - name: Upload bin directory
+      - name: Upload to Artifact
         if: steps.Compile.outcome == 'success' && !cancelled()
         uses: actions/upload-artifact@main
         with:
