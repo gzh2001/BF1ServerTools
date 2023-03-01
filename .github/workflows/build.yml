@@ -25,7 +25,7 @@ jobs:
       # 开始编译
       - name: Compile
         id: Compile
-        run: msbuild -restore -p:Configuration=Release -p:OutputPath=.\output\BF1ServerTools BF1ServerTools.sln
+        run: msbuild -restore -p:Configuration=Release -p:OutputPath=..\output\BF1ServerTools BF1ServerTools.sln
 
       # 压缩编译输出
       - name: Compress output
