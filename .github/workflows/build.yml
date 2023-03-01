@@ -30,13 +30,13 @@ jobs:
       # 压缩编译输出
       - name: Compress output
         id: Compress
-        if: steps.Compile.outputs.status == 'success'
+        if: steps.Compile.outcome == 'success'
         run: Compress-Archive -Path .\output\BF1ServerTools -DestinationPath .\output\BF1ServerTools.zip
 
       # 上传wetransfer
       - name: Upload firmware to WeTransfer
         id: wetransfer
-        if: steps.Compress.outputs.status == 'success' && env.wetransfer == 'true' && !cancelled()
+        if: steps.Compress.outcome == 'success' && env.wetransfer == 'true' && !cancelled()
         run: |
           Start-BitsTransfer -Source https://github.com/Mikubill/transfer/releases/download/v0.4.17/transfer_0.4.17_windows_amd64.zip -Destination .
           Expand-Archive -Path .\transfer_0.4.17_windows_amd64.zip -DestinationPath .
@@ -44,7 +44,7 @@ jobs:
 
       # 上传GitHub Action Artifact
       - name: Upload bin directory
-        if: steps.Compile.outputs.status == 'success' && !cancelled()
+        if: steps.Compile.outcome == 'success' && !cancelled()
         uses: actions/upload-artifact@main
         with:
           name: BF1ServerTools
