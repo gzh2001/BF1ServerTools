@@ -1,0 +1,37 @@
+name: "build"
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          vs-version: "[17.4,17.5)"
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build app for release
+        run: msbuild BF1ServerTools.sln
+
+      - name: show differences
+        run: git diff
+
+      - name: Compress output
+        run: Compress-Archive -Path D:\a\BF1ServerTools\BF1ServerTools\BF1ServerTools -DestinationPath D:\a\BF1ServerTools\BF1ServerTools.zip
+
+      - name: Upload bin directory
+        uses: actions/upload-artifact@main
+        with:
+          name: BF1ServerTools.zip
+          path: D:\a\BF1ServerTools\BF1ServerTools.zip
