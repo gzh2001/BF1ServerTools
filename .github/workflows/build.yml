@@ -8,7 +8,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
@@ -22,4 +22,4 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: BF1ServerTools
-          path: D:\a\BF1ServerTools\output\BF1ServerTools
+          path: D:\a\BF1ServerTools\output
