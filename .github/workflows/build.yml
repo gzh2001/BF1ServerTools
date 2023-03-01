@@ -25,7 +25,13 @@ jobs:
         run: msbuild BF1ServerTools.sln
 
       - name: show differences
-        run: |
-          Get-Location
-          git diff
-          get-item .
+        run: git diff
+
+      - name: Compress output
+        run: Compress-Archive -Path D:\a\BF1ServerTools\BF1ServerTools\BF1ServerTools -DestinationPath D:\a\BF1ServerTools\BF1ServerTools.zip
+
+      - name: Upload bin directory
+        uses: actions/upload-artifact@main
+        with:
+          name: BF1ServerTools.zip
+          path: D:\a\BF1ServerTools\BF1ServerTools.zip
