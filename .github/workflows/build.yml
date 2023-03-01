@@ -15,10 +15,19 @@ jobs:
         with:
           vs-version: "[17.4,17.5)"
 
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.11
+
+      - name: Install dependencies
+        run: dotnet restore
+
       - name: Build app for release
         run: msbuild BF1ServerTools.sln
 
       - name: show differences
         run: |
+          Get-Location
           git diff
           get-item .
