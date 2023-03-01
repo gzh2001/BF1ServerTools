@@ -3,6 +3,12 @@ on:
   push:
   workflow_dispatch:
 
+env:
+  VS_VERSION: "[17.4,17.5)"  # 包括17.4但不包括17.5
+  wetransfer: false
+  TZ: Asia/Shanghai
+
+
 jobs:
   build:
     runs-on: windows-latest
@@ -14,27 +20,32 @@ jobs:
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.1
         with:
-          vs-version: "[17.4,17.5)"
+          vs-version: ${{ env.VS_VERSION }}
 
       # 开始编译
-      - name: Build
-        run: msbuild -restore -p:Configuration=Release -p:OutputPath=D:\a\BF1ServerTools\output\BF1ServerTools BF1ServerTools.sln
+      - name: Compile
+        id: Compile
+        run: msbuild -restore -p:Configuration=Release -p:OutputPath=.\output\BF1ServerTools BF1ServerTools.sln
 
       # 压缩编译输出
       - name: Compress output
-        run: Compress-Archive -Path D:\a\BF1ServerTools\output\BF1ServerTools -DestinationPath D:\a\BF1ServerTools\output\BF1ServerTools.zip
+        id: Compress
+        if: steps.Compile.outputs.status == 'success'
+        run: Compress-Archive -Path .\output\BF1ServerTools -DestinationPath .\output\BF1ServerTools.zip
 
       # 上传wetransfer
       - name: Upload firmware to WeTransfer
         id: wetransfer
+        if: steps.Compress.outputs.status == 'success' && env.wetransfer == 'true' && !cancelled()
         run: |
-          Start-BitsTransfer -Source https://github.com/Mikubill/transfer/releases/download/v0.4.17/transfer_0.4.17_windows_amd64.zip -Destination D:\a\BF1ServerTools
-          Expand-Archive -Path D:\a\BF1ServerTools\transfer_0.4.17_windows_amd64.zip -DestinationPath D:\a\BF1ServerTools
-          D:\a\BF1ServerTools\transfer.exe wet -s --no-progress D:\a\BF1ServerTools\output\BF1ServerTools.zip
+          Start-BitsTransfer -Source https://github.com/Mikubill/transfer/releases/download/v0.4.17/transfer_0.4.17_windows_amd64.zip -Destination .
+          Expand-Archive -Path .\transfer_0.4.17_windows_amd64.zip -DestinationPath .
+          .\transfer.exe wet -s --no-progress .\output\BF1ServerTools.zip
 
       # 上传GitHub Action Artifact
       - name: Upload bin directory
+        if: steps.Compile.outputs.status == 'success' && !cancelled()
         uses: actions/upload-artifact@main
         with:
           name: BF1ServerTools
-          path: D:\a\BF1ServerTools\output
+          path: .\output
